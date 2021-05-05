@@ -49,56 +49,56 @@ window.addEventListener('DOMContentLoaded', () => {
     //меню
     const toggleMenu = () => {
         const btnMenu = document.querySelector('.menu'),
-        menu = document.querySelector('menu'),
-        closeBtn = document.querySelector('.close-btn'),
-        menuItems = menu.querySelectorAll('ul>li');
-    const handlerMenu = () =>{
-        menu.classList.toggle('active-menu');
-    }
+            menu = document.querySelector('menu'),
+            closeBtn = document.querySelector('.close-btn'),
+            menuItems = menu.querySelectorAll('ul>li');
+        const handlerMenu = () => {
+            menu.classList.toggle('active-menu');
+        };
         btnMenu.addEventListener('click', handlerMenu);
         closeBtn.addEventListener('click', handlerMenu);
-        menuItems.forEach((item)=>item.addEventListener('click', handlerMenu));
+        menuItems.forEach(item => item.addEventListener('click', handlerMenu));
 
     };
     toggleMenu();
 
     //popup
-    const togglePopUp = ()=>{
+    const togglePopUp = () => {
         const popup = document.querySelector('.popup'),
-        popupBtn = document.querySelectorAll('.popup-btn'),
-        popupCloseBtn = popup.querySelector('.popup-close');
+            popupBtn = document.querySelectorAll('.popup-btn'),
+            popupCloseBtn = popup.querySelector('.popup-close');
 
-        
-        function Show(obj){
+
+        function Show(obj) {
             obj.style.opacity = +0;
             obj.style.display = 'block';
-            let op = (obj.style.opacity)?parseFloat(obj.style.opacity):parseInt(obj.style.filter)/100;
-            function allShow(){
+            let op = (obj.style.opacity) ? parseFloat(obj.style.opacity) : parseInt(obj.style.filter) / 100;
+            function allShow() {
                 showInterval = requestAnimationFrame(allShow);
-                if(op < 1) {   
-                    op += 0.05;     
-                    obj.style.opacity = op;     
-                    obj.style.filter=`alpha(opacity='${op*100}')`;
-                    console.log(op);                            
-                } else if (op>=1) {
+                if (op < 1) {
+                    op += 0.05;
+                    obj.style.opacity = op;
+                    obj.style.filter = `alpha(opacity='${op * 100}')`;
+                    console.log(op);
+                } else if (op >= 1) {
                     cancelAnimationFrame(showInterval);
                 }
             }
             showInterval = requestAnimationFrame(allShow);
         }
 
-        function Hide(obj){
+        function Hide(obj) {
             obj.style.opacity = +1;
-            let op = (obj.style.opacity)?parseFloat(obj.style.opacity):parseInt(obj.style.filter)/100;
-            function allHide(){        
+            let op = (obj.style.opacity) ? parseFloat(obj.style.opacity) : parseInt(obj.style.filter) / 100;
+            function allHide() {
                 hideInterval = requestAnimationFrame(allHide);
-                if(op >= 0) {                
-                op -= 0.05; 
-                obj.style.opacity = op; 
-                obj.style.filter=`alpha(opacity='${op*100}')`;
-                console.log(op); 
-                hT=setTimeout(allHide, 30);
-                } else if(op<0){
+                if (op >= 0) {
+                    op -= 0.05;
+                    obj.style.opacity = op;
+                    obj.style.filter = `alpha(opacity='${op * 100}')`;
+                    console.log(op);
+                    
+                } else if (op < 0) {
                     cancelAnimationFrame(hideInterval);
                     obj.style.display = 'none';
                 }
@@ -106,30 +106,30 @@ window.addEventListener('DOMContentLoaded', () => {
             hideInterval = requestAnimationFrame(allHide);
         }
 
-        popupBtn.forEach((elem)=>{
-            elem.addEventListener('click',  ()=>{
-                if(document.documentElement.clientWidth>=768){
-                Show(popup);
+        popupBtn.forEach(elem => {
+            elem.addEventListener('click',  () => {
+                if (document.documentElement.clientWidth >= 768) {
+                    Show(popup);
                 } else {
                     popup.style.opacity = +1;
                     popup.style.display = 'block';
                 }
             });
         });
-        
-        popupCloseBtn.addEventListener('click', ()=>{
-            if(document.documentElement.clientWidth>=768){
-            Hide(popup);
-            }else {
+
+        popupCloseBtn.addEventListener('click', () => {
+            if (document.documentElement.clientWidth >= 768) {
+                Hide(popup);
+            } else {
                 popup.style.display = 'none';
             }
         });
-        console.log()
+        console.log();
     };
     togglePopUp();
 });
 
-function Hide() { 
+function Hide() {
 
- 
- }
+
+}
