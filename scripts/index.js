@@ -45,5 +45,90 @@ window.addEventListener('DOMContentLoaded', () => {
         updateClock();
     }
     countTimer('06 may 2021');
+
+    //меню
+    const toggleMenu = () => {
+        const btnMenu = document.querySelector('.menu'),
+        menu = document.querySelector('menu'),
+        closeBtn = document.querySelector('.close-btn'),
+        menuItems = menu.querySelectorAll('ul>li');
+    const handlerMenu = () =>{
+        menu.classList.toggle('active-menu');
+    }
+        btnMenu.addEventListener('click', handlerMenu);
+        closeBtn.addEventListener('click', handlerMenu);
+        menuItems.forEach((item)=>item.addEventListener('click', handlerMenu));
+
+    };
+    toggleMenu();
+
+    //popup
+    const togglePopUp = ()=>{
+        const popup = document.querySelector('.popup'),
+        popupBtn = document.querySelectorAll('.popup-btn'),
+        popupCloseBtn = popup.querySelector('.popup-close');
+
+        
+        function Show(obj){
+            obj.style.opacity = +0;
+            obj.style.display = 'block';
+            let op = (obj.style.opacity)?parseFloat(obj.style.opacity):parseInt(obj.style.filter)/100;
+            function allShow(){
+                if(op < 1) {   
+                    op += 0.07;     
+                    obj.style.opacity = op;     
+                    obj.style.filter=`alpha(opacity='${op*100}')`;
+                    console.log(op);     
+                    sT=setTimeout(allShow, 30);     
+                } else if (op>=1) {
+                    clearTimeout(sT);
+                }
+            }
+            allShow();
+        }
+
+        function Hide(obj){
+            obj.style.opacity = +1;
+            let op = (obj.style.opacity)?parseFloat(obj.style.opacity):parseInt(obj.style.filter)/100;
+            function allHide(){                
+                if(op >= 0) {                
+                op -= 0.07; 
+                obj.style.opacity = op; 
+                obj.style.filter=`alpha(opacity='${op*100}')`;
+                console.log(op); 
+                hT=setTimeout(allHide, 30);
+                } else if(op<0){
+                    clearTimeout(hT);
+                    obj.style.display = 'none';
+                }
+            }
+            allHide();
+        }
+
+        popupBtn.forEach((elem)=>{
+            elem.addEventListener('click',  ()=>{
+                if(document.documentElement.clientWidth>=768){
+                Show(popup);
+                } else {
+                    popup.style.opacity = +1;
+                    popup.style.display = 'block';
+                }
+            });
+        });
+        
+        popupCloseBtn.addEventListener('click', ()=>{
+            if(document.documentElement.clientWidth>=768){
+            Hide(popup);
+            }else {
+                popup.style.display = 'none';
+            }
+        });
+        console.log()
+    };
+    togglePopUp();
 });
 
+function Hide() { 
+
+ 
+ }
