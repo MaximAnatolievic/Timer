@@ -55,10 +55,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
         document.addEventListener('click', event => {
             const target = event.target;
+            console.log(target);
             const target1 = target.closest('.menu');
             const target2 = target.closest('.close-btn');
             const target3 = target.closest('.active-menu');
-            const target4 = target.closest('ul');
+            const target4 = target.closest('menu>ul');
             if (target1 || target2 || target4) {
                 handlerMenu();
             } else if (!target3) {
