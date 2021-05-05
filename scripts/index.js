@@ -74,35 +74,36 @@ window.addEventListener('DOMContentLoaded', () => {
             obj.style.display = 'block';
             let op = (obj.style.opacity)?parseFloat(obj.style.opacity):parseInt(obj.style.filter)/100;
             function allShow(){
+                showInterval = requestAnimationFrame(allShow);
                 if(op < 1) {   
-                    op += 0.07;     
+                    op += 0.05;     
                     obj.style.opacity = op;     
                     obj.style.filter=`alpha(opacity='${op*100}')`;
-                    console.log(op);     
-                    sT=setTimeout(allShow, 30);     
+                    console.log(op);                            
                 } else if (op>=1) {
-                    clearTimeout(sT);
+                    cancelAnimationFrame(showInterval);
                 }
             }
-            allShow();
+            showInterval = requestAnimationFrame(allShow);
         }
 
         function Hide(obj){
             obj.style.opacity = +1;
             let op = (obj.style.opacity)?parseFloat(obj.style.opacity):parseInt(obj.style.filter)/100;
-            function allHide(){                
+            function allHide(){        
+                hideInterval = requestAnimationFrame(allHide);
                 if(op >= 0) {                
-                op -= 0.07; 
+                op -= 0.05; 
                 obj.style.opacity = op; 
                 obj.style.filter=`alpha(opacity='${op*100}')`;
                 console.log(op); 
                 hT=setTimeout(allHide, 30);
                 } else if(op<0){
-                    clearTimeout(hT);
+                    cancelAnimationFrame(hideInterval);
                     obj.style.display = 'none';
                 }
             }
-            allHide();
+            hideInterval = requestAnimationFrame(allHide);
         }
 
         popupBtn.forEach((elem)=>{
