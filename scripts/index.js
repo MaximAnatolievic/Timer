@@ -285,12 +285,11 @@ window.addEventListener('DOMContentLoaded', () => {
             if (target.matches('.calc-block>input')) {
                 target.value = target.value.replace(/\D/, '');
             } else if (target.matches(`.form-name, #form2-message, #form2-name`)) {
-                target.value = target.value.replace(/[^- А-яа-я]/, '');
+                target.value = target.value.replace(/[^ А-яа-я]/, '');
             } else if (target.matches('.form-email')) {
                 target.value = target.value.replace(/[^\w\-@\.\!~\*']/g, '');
             } else if (target.matches('.form-phone')) {
-                target.value = target.value.replace(/[^\d\(\)\-]/g, '');
-                target.value = target.value.replace(/[^\d\(\)\-]/g, '');
+                target.value = target.value.replace(/[^\d\(\)\-\+]/g, '');
             }
         });
 
@@ -306,7 +305,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 target.value = target.value.replace(/^[\s\-]+/gi, '');
                 target.value = target.value.replace(/\w+/gi, '');
                 target.value = target.value.replace(/\-$/gi, '');
-                target.value = target.value.split(/\s+/).map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ');
+                if (target.value)target.value = target.value.split(/\s+/).map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ');
 
                 console.log(target.value);
 
@@ -350,41 +349,49 @@ window.addEventListener('DOMContentLoaded', () => {
             day = document.querySelector('.calc-day'),
             totalValue = document.getElementById('total'),
             calcBlock = document.querySelector('.calc-block');
-            
-        const countSum = () => {      
-            let currValue =  totalValue.textContent;      
-            let total = 0;
-            countValue = 1,
-            dayValue = 1;
+
+        const countSum = () => {
+            let total = 0,
+                countValue = 1,
+                dayValue = 1;
             const typeValue = type.options[type.selectedIndex].value,
                 squareValue = +square.value;
-            if (count.value > 1) {
+            if (count.value > 1 && count.value) {
                 countValue += (count.value - 1) / 10;
             }
             if (day.value < 5 && day.value) {
                 dayValue = 2;
             } else if (day.value < 10 && day.value) {
                 dayValue = 1.5;
+            } else {
+                dayValue = 1;
             }
             if (typeValue && squareValue) {
                 total = Math.ceil(price * typeValue * squareValue * countValue * dayValue);
+
             }
 
-            function showIt(){
+
+            function showIt() {
+
                 animate = requestAnimationFrame(showIt);
-                
+                let currValue = +totalValue.textContent;
+                const dif = Math.abs(Math.ceil((total - currValue) * 0.05));
+                console.log(currValue);
+                console.log(dif);
                 if (currValue < total) {
-                    currValue++;
-                    totalValue.textContent = currValue;                    
-                } else if (currValue > total) {
-                    currValue--;
-                    totalValue.textContent = currValue;                    
-                } else {
+                    currValue += dif;
                     totalValue.textContent = currValue;
+                } else if (currValue > total) {
+                    currValue -= dif;
+                    totalValue.textContent = currValue;
+                } else {
+                    totalValue.textContent = total;
                     cancelAnimationFrame(animate);
                 }
 
-            };
+            }
+
             animate = requestAnimationFrame(showIt);
 
         };
