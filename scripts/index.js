@@ -3,9 +3,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //Timer
     function countTimer(deadline) {
-        const timerHours = document.querySelector('#timer-hours'),
-            timerMinutes = document.querySelector('#timer-minutes'),
-            timerSeconds = document.querySelector('#timer-seconds');
+        const timerHours = document.getElementById('timer-hours'),
+            timerMinutes = document.getElementById('timer-minutes'),
+            timerSeconds = document.getElementById('timer-seconds');
 
         function getTimeRemaining() {
             const dateStop = new Date(deadline).getTime(),
@@ -52,7 +52,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         document.addEventListener('click', event => {
             const target = event.target;
-            console.log(target);
             const target1 = target.closest('.menu');
             const target2 = target.closest('.close-btn');
             const target3 = target.closest('.active-menu');
@@ -172,7 +171,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //Слайдер
     const slider = () => {
-        const sliders = document.querySelector('#all-progects'),
+        const sliders = document.getElementById('all-progects'),
             slide = sliders.querySelectorAll('.portfolio-item'),
             dot = [];
 
@@ -254,4 +253,95 @@ window.addEventListener('DOMContentLoaded', () => {
         startSlide();
     };
     slider();
+
+    //меняем фото команды
+    const picChange = () => {
+
+        document.addEventListener('mouseover', event => {
+            const target = event.target;
+            if (target.matches('.command__photo')) {
+                target.src = target.dataset.img;
+            }
+        });
+
+        document.addEventListener('mouseout', event => {
+            const target = event.target;
+            if (target.matches('.command__photo')) {
+                let str = target.src;
+                str = str.substring(0, str.indexOf('a.jpg')) + '.jpg';
+                target.src = str;
+            }
+        });
+
+    };
+    picChange();
+
+    //Форма-калькулятор
+    const validation = () => {
+        const type = document.querySelector('.calc-type'),
+            square = document.querySelector('.calc-square'),
+            count = document.querySelector('.calc-count'),
+            day = document.querySelector('.calc-day');
+
+        document.addEventListener('input', event => {
+            const target = event.target;
+            if (target.matches('.calc-block>input')) {
+                target.value = target.value.replace(/\D/, '');
+            } else if (target.matches(`.form-name, #form2-message, #form2-name`)) {
+                target.value = target.value.replace(/[^- А-яа-я]/, '');
+            } else if (target.matches('.form-email')) {
+                target.value = target.value.replace(/[^\w\-@\.\!~\*']/g, '');
+            } else if (target.matches('.form-phone')) {
+                target.value = target.value.replace(/[^\d\(\)\-]/g, '');
+                target.value = target.value.replace(/[^\d\(\)\-]/g, '');
+            }
+        });
+
+        document.addEventListener('blur', event => {
+            const target = event.target;
+            if (target.matches('.calc-block>input')) {
+                const isCorrect = target.value.match(/\d/g);
+                target.value = isCorrect.join('');
+            } else if (target.matches(`.form-name, #form2-name`)) {
+                target.value = target.value.replace(/\s+/g, ' ');
+                target.value = target.value.replace(/(\s\-)+/g, '');
+                target.value = target.value.replace(/\-+/g, '-');
+                target.value = target.value.replace(/^[\s\-]+/gi, '');
+                target.value = target.value.replace(/\w+/gi, '');
+                target.value = target.value.replace(/\-$/gi, '');
+                target.value = target.value.split(/\s+/).map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ');
+
+                console.log(target.value);
+
+            } else if (target.matches('.form-email')) {
+                let isCorrect = target.value.match(/@/);
+                if (!isCorrect && target.value !== '') {
+                    alert('E-mail должен содержать символ @');
+                    target.value = '';
+                } else {
+                    isCorrect = target.value.match(/[\w\.]{1,10}@[a-z1-9]{2,10}\.[a-z]{2,3}/gi);
+                    if (!isCorrect && target.value !== '') {
+                        alert('Неверно указан домен');
+                        target.value = '';
+                    }
+                }
+
+            } else if (target.matches('.form-phone')) {
+                target.value = target.value.replace(/^8{1}|^7/gi, '+7 ');
+                target.value = target.value.replace(/^...([0-9]{3})/g, (match, val1) => (val1 = `+7 (${val1}) `));
+                if (target.value.length !== 16 && target.value !== '') {
+                    target.value = '';
+                    alert('Проверьте номер');
+                }
+
+            } else if (target.matches('#form2-message')) {
+                target.value = target.value.replace(/\s+/g, ' ');
+                target.value = target.value.replace(/\-+/g, '-');
+                target.value = target.value.replace(/^[\s\-]+/gi, '');
+                target.value = target.value.replace(/\w+/gi, '');
+                target.value = target.value.replace(/([а-я]{1})/i, (math, val1) => (val1.toUpperCase()));
+            }
+        }, true);
+    };
+    validation();
 });
