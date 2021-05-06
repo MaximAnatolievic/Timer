@@ -368,23 +368,23 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             if (typeValue && squareValue) {
                 total = Math.ceil(price * typeValue * squareValue * countValue * dayValue);
-
             }
 
 
             function showIt() {
-
-                animate = requestAnimationFrame(showIt);
-                let currValue = +totalValue.textContent;
-                const dif = Math.abs(Math.ceil((total - currValue) * 0.05));
-                console.log(currValue);
-                console.log(dif);
+                let currValue = parseInt(totalValue.textContent);    
+                animate = requestAnimationFrame(showIt);                            
                 if (currValue < total) {
+                    let dif = Math.ceil((total - currValue) * 0.05);
                     currValue += dif;
                     totalValue.textContent = currValue;
                 } else if (currValue > total) {
+                    let dif = Math.ceil((currValue - total) * 0.05);
                     currValue -= dif;
                     totalValue.textContent = currValue;
+                } else if (currValue ===total){
+                    totalValue.textContent = total;
+                    cancelAnimationFrame(animate);
                 } else {
                     totalValue.textContent = total;
                     cancelAnimationFrame(animate);
