@@ -429,38 +429,17 @@ window.addEventListener('DOMContentLoaded', () => {
                 item.appendChild(statusMessage);
                 statusMessage.classList = 'lds-circle';
                 const formData = new FormData(item);
+
                 const body = {};
                 formData.forEach((val, key) => {
                     body[key] = val;
                 });
 
-                const postData = body => {
-                    const promise = new Promise((resolve, reject) => {
-                        const request = new XMLHttpRequest();
-                        request.open('POST', './server.php');
-                        request.setRequestHeader('Content-Type', 'application/json');
-                        request.send(JSON.stringify(body));
-                        request.addEventListener('readystatechange', () => {
-                            if (request.readyState !== 4) {
-                                return;
-                            }
-                            if (request.status === 200) {
-                                document.querySelectorAll('input').forEach(item => {
-                                    item.value = '';
-                                });
-                                resolve(request.response);
-                            } else {
-                                statusMessage.textContent = errorMessage;
-                                reject(request.status);
-                            }
-                        });
-
-                    });
-                    return promise;
-                };
 
                 const applySend = resp => {
-                    console.log(resp);
+                    if (resp.status !== 200) {
+                        throw new Error('Network status is not 200');
+                    }
                     statusMessage.textContent = successMessage;
                     statusMessage.classList.remove('lds-circle');
                     if (item.matches('#form3')) {
@@ -470,7 +449,14 @@ window.addEventListener('DOMContentLoaded', () => {
                             document.querySelector('.popup').style.display = 'none';
                         }
                     }
+
                 };
+
+                const postData = body => fetch('./server.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
 
                 postData(body)
                     .then(applySend)
@@ -485,3 +471,29 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     sendForm();
 });
+/*
+const postData = body => {
+    const promise = new Promise((resolve, reject) => {
+        const request = new XMLHttpRequest();
+        request.open('POST', './server.php');
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(JSON.stringify(body));
+        request.addEventListener('readystatechange', () => {
+            if (request.readyState !== 4) {
+                return;
+            }
+            if (request.status === 200) {
+                document.querySelectorAll('input').forEach(item => {
+                    item.value = '';
+                });
+                resolve(request.response);
+            } else {
+                statusMessage.textContent = errorMessage;
+                reject(request.status);
+            }
+        });
+
+    });
+    return promise;
+};
+*/
