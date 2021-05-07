@@ -429,12 +429,18 @@ window.addEventListener('DOMContentLoaded', () => {
                 item.appendChild(statusMessage);
                 statusMessage.classList = 'lds-circle';
                 const formData = new FormData(item);
-
                 const body = {};
                 formData.forEach((val, key) => {
                     body[key] = val;
                 });
-
+                console.log(body);
+                if(!body.user_email){
+                    document.querySelectorAll('input').forEach(item => {
+                        item.value = '';
+                    });
+                    statusMessage.textContent = 'Не заполнено обязательное поле E-Mail';
+                    throw new Error('email is empty');
+                }
 
                 const applySend = resp => {
                     if (resp.status !== 200) {
@@ -442,6 +448,9 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                     statusMessage.textContent = successMessage;
                     statusMessage.classList.remove('lds-circle');
+                    document.querySelectorAll('input').forEach(item => {
+                        item.value = '';
+                    });
                     if (item.matches('#form3')) {
                         if (document.documentElement.clientWidth >= 768) {
                             Hide(document.querySelector('.popup'));
@@ -449,7 +458,7 @@ window.addEventListener('DOMContentLoaded', () => {
                             document.querySelector('.popup').style.display = 'none';
                         }
                     }
-
+                    
                 };
 
                 const postData = body => fetch('./server.php', {
