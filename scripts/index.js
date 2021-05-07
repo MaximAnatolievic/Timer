@@ -416,12 +416,12 @@ window.addEventListener('DOMContentLoaded', () => {
             successMessage = 'Спасибо, мы скоро с Вами свяжемся';
 
         const forms = document.querySelectorAll('[name="user_form"]');
-
-
         const statusMessage = document.createElement('div');
         const animateDiv = document.createElement('div');
         statusMessage.appendChild(animateDiv);
         statusMessage.style.cssText = 'font-size: 2rem';
+
+
 
         forms.forEach(item => {
             item.addEventListener('submit', event => {
@@ -433,7 +433,34 @@ window.addEventListener('DOMContentLoaded', () => {
                 formData.forEach((val, key) => {
                     body[key] = val;
                 });
-                postData(body, () => {
+
+                const postData = body => {
+                    const promise = new Promise((resolve, reject) => {
+                        const request = new XMLHttpRequest();
+                        request.open('POST', './server.php');
+                        request.setRequestHeader('Content-Type', 'application/json');
+                        request.send(JSON.stringify(body));
+                        request.addEventListener('readystatechange', () => {
+                            if (request.readyState !== 4) {
+                                return;
+                            }
+                            if (request.status === 200) {
+                                document.querySelectorAll('input').forEach(item => {
+                                    item.value = '';
+                                });
+                                resolve(request.response);
+                            } else {
+                                statusMessage.textContent = errorMessage;
+                                reject(request.status);
+                            }
+                        });
+
+                    });
+                    return promise;
+                };
+
+                const applySend = resp => {
+                    console.log(resp);
                     statusMessage.textContent = successMessage;
                     statusMessage.classList.remove('lds-circle');
                     if (item.matches('#form3')) {
@@ -443,38 +470,17 @@ window.addEventListener('DOMContentLoaded', () => {
                             document.querySelector('.popup').style.display = 'none';
                         }
                     }
-                }, error => {
-                    statusMessage.textContent = errorMessage;
-                    console.log(error);
-                });
+                };
+
+                postData(body)
+                    .then(applySend)
+                    .catch(error => console.error(error));
 
             });
         });
 
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-                    outputData();
-                    document.querySelectorAll('input').forEach(item => {
-                        item.value = '';
-                    });
-                } else {
-                    errorData(request.status);
-
-                }
-            });
-
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
 
 
-            request.send(JSON.stringify(body));
-        };
 
     };
     sendForm();
