@@ -86,6 +86,9 @@ window.addEventListener('DOMContentLoaded', () => {
     //popup
     const togglePopUp = () => {
         const popup = document.querySelector('.popup');
+        const form3 = document.getElementById('form3');
+        form3.style.color = 'white';
+
 
         function Show(obj) {
             obj.style.opacity = +0;
@@ -433,7 +436,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 formData.forEach((val, key) => {
                     body[key] = val;
                 });
-                console.log(body);
                 if(!body.user_email){
                     document.querySelectorAll('input').forEach(item => {
                         item.value = '';
@@ -452,11 +454,13 @@ window.addEventListener('DOMContentLoaded', () => {
                         item.value = '';
                     });
                     if (item.matches('#form3')) {
+                        setTimeout(()=>{
                         if (document.documentElement.clientWidth >= 768) {
                             Hide(document.querySelector('.popup'));
                         } else {
                             document.querySelector('.popup').style.display = 'none';
                         }
+                    }, 2000);
                     }
                     
                 };
