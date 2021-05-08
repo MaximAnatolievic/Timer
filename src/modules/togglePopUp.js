@@ -44,6 +44,7 @@ const togglePopUp = () => {
 
 
     document.addEventListener('click', event => {
+
         let target = event.target;
 
 
@@ -70,46 +71,6 @@ const togglePopUp = () => {
                 }
             }
         }
-
-
-    });
-    
-    document.addEventListener('click', (event)=>{
-        event.preventDefault();
-        const target = event.target;
-        let scrollInterval;        
-        const scrolling = () => {
-            scrollInterval = requestAnimationFrame(scrolling);
-            let top;
-            if(target === document.querySelectorAll('[href="#service-block"]')[1]||target === document.querySelector('[src="images/scroll.svg"]')){
-                top = Math.ceil(document.getElementById('service-block').getBoundingClientRect().top);
-            }else if(target === document.querySelector('[href="#portfolio"]')) {
-                top = Math.ceil(document.getElementById('portfolio').getBoundingClientRect().top);
-            }else if(target === document.querySelector('[href="#calc"]')){
-                top = Math.ceil(document.getElementById('calc').getBoundingClientRect().top);
-            } else if (target === document.querySelector('[href="#command"]')){
-                top = Math.ceil(document.getElementById('command').getBoundingClientRect().top);
-            } else if (target === document.querySelector('[href="#connect"]')){
-                top = Math.ceil(document.getElementById('connect').getBoundingClientRect().top);
-            }else {
-                cancelAnimationFrame(scrollInterval);
-            }
-            let step = Math.ceil(top*0.1);
-            if(top<=10){
-                step = 2;
-            } 
-
-            console.log(`Top ${top}    Step  ${step}`);
-
-            scrollBy(0, step);
-
-            if(step >= top){
-                    cancelAnimationFrame(scrollInterval);
-            } else if (document.documentElement.clientHeight + document.documentElement.scrollTop >= document.documentElement.scrollHeight){
-                cancelAnimationFrame(scrollInterval);
-            }
-        }
-        scrollInterval = requestAnimationFrame(scrolling);
     });
 };
 

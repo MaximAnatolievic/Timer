@@ -9,6 +9,7 @@ import picChange from './modules/picChange';
 import validation from './modules/validation';
 import calc from './modules/calc';
 import sendForm from './modules/sendForm';
+import scrolFoo from './modules/scrolFoo';
 
 
 //Меню
@@ -29,3 +30,5 @@ validation();
 calc(100);
 //send-ajax-form
 sendForm();
+//
+scrolFoo();
