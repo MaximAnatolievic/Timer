@@ -44,6 +44,7 @@ const sendForm = () => {
                 });
                 statusMessage.classList.remove('lds-circle');
                 animateDiv.textContent = 'Не заполнено обязательное поле E-Mail';
+                setTimeout((()=> animateDiv.textContent =''), 3000);
                 throw new Error('email is empty');
             }
 
@@ -51,8 +52,9 @@ const sendForm = () => {
                 if (resp.status !== 200) {
                     throw new Error('Network status is not 200');
                 }
-                animateDiv.textContent = successMessage;
                 statusMessage.classList.remove('lds-circle');
+                animateDiv.textContent = successMessage;
+                setTimeout((()=> animateDiv.textContent =''), 3000);
                 document.querySelectorAll('input').forEach(item => {
                     item.value = '';
                 });
@@ -79,6 +81,7 @@ const sendForm = () => {
                 .catch((error) => {
                     statusMessage.classList.remove('lds-circle');
                     animateDiv.textContent = errorMessage;
+                    setTimeout((()=> animateDiv.textContent =''), 3000);
                     console.error(error)});
 
         });
